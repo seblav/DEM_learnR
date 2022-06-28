@@ -1,0 +1,280 @@
+---
+title: "Centre for demography R for beginners"
+author: 'Author: Sébastien Lavoie'
+date: 'Version: June 28th, 2022'
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+# Codecademy Learn R  - Introduction to R syntax exercises
+
+## R syntax
+
+### Review the basics
+
+In this quiz, we will review the basic elements of R syntax that were covered at the beginning of our session. If you are unsure, 
+you can always go review the lesson or use google. Don't stress, you are allowed as many tries as you want. 
+
+```{r basics_quiz, echo=FALSE}
+quiz(
+  question_numeric(
+    "In R, what would be the result of (6a + 42) / (3 * 5) if a = 3?",
+    answer(4, correct = TRUE),
+    allow_retry = TRUE,
+    incorrect = "Incorrect. Remember that R follows standard mathematical oder of operations."
+  ), 
+  
+  question_radio(
+    "What symbol(s) is used to mark a line as containing comments in R?",
+    answer("*"),
+    answer("/*"),
+    answer("#", correct = TRUE),
+    answer("//"),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),
+  
+  question_checkbox(
+    "Select all that would be interpreted as valid strings (combination of characters) when typed in R as shown below. ",
+    answer("'hello'", correct = TRUE),
+    answer("hello"),
+    answer("'déjà vu'", correct = TRUE),
+    answer("three dogs"),
+    answer("'32'", correct = TRUE),
+    answer("3.1415"),
+    random_answer_order = TRUE,
+    allow_retry = TRUE,
+    incorrect = "Incorrect. Remember that R needs string sto be clearly identified."
+  ),
+  
+  question_checkbox(
+    "Which two of the following are valid R vectors?",
+    answer("c(1965, 12, 27)", correct = TRUE),
+    answer("('1976', '08' '14')"),
+    answer("c(1958, '06', 23)"),
+    answer("c('1971', '02', '12')", correct = TRUE),
+    answer("c(1986, '8', '6')"),
+    random_answer_order = TRUE,
+    allow_retry = TRUE,
+    incorrect = "Incorrect. Remember that vectors must contain elements of the same type separated by commas AND inside the combine operator c()."
+  )
+  
+)
+
+```
+
+
+### Vector concepts
+
+For this exercise, you will be writing the code to review vector concepts. In the code box below:
+
+1. Create a `phone_numbers` vector containing three different, 10-digit phone numbers as numeric values. <br>
+2. Use `print()` to display the vector content. <br>
+3. Using the square brackets `[]` inside the `print()` statement, display only the third element of the vector. <br>
+4. **TIP :** you can use vectors `c()` inside square brackets `[]` to access more than one element at a time. Try it for yourself! Using the following syntax will display both the first and third element of your vector: `print(phone_numbers[c(1, 3)])`.
+
+**To see the outputs of your code, click the `>Run Code` button.** 
+
+Note: if you are stuck, click on the hint button.
+
+```{r vectors_ex, exercise=TRUE, exercise.lines = 5}
+
+```
+
+```{r vectors_ex-hint}
+# 1
+phone_numbers <- c(1234567890, 0987654321, 5647382910)
+
+# 2
+print(phone_numbers)
+
+# 3
+print(phone_numbers[3])
+
+# 4
+print(phone_numbers[c(1, 3)])
+
+
+```
+
+
+
+## if-else statements and operators
+
+Now that we've reviewed some of the basic syntax, let's move on to `if-else` statements with comparison and logical operators.
+
+Comparison operators, as their name suggest, are used to evaluate one element against another. The comparison is evaluated like text
+from left to right, returning either `TRUE` or `FALSE`. Comparison operators include `<`, `>`, `<=`, `>=`, `==` and `!=` (less than, greater than, less than or equal, greater than or equal, equal and not equal). 
+
+Logical operators can be used to create more complex conditions to be tested. They include `&`, `|` and `!` (AND, OR and NOT).
+
+### Simple if-else statement
+
+1. Below are two variables. `math_score` stores the score (in percent) of a student on a math test while `passing_score` stores the minimum score needed to pass the test. 
+2. In the code box, write an `if-else` statement that prints out `pass` or `fail` according to the math score in relation to the passing score. 
+3. Test your statement by changing the value of `math_score` to something less than `passing_score`. Do you observed the expected output?
+
+```{r ifelse_ex, exercise=TRUE, exercise.eval=FALSE}
+math_score <- 70
+passing_score <- 60
+
+# Write your if-else statement below
+
+
+
+```
+
+```{r ifelse_ex-hint}
+math_score <- 70
+passing_score <- 60
+
+# Write your if-else statement below
+if (math_score >= passing_score) {
+  print("pass")
+} else {
+  print("fail")
+}
+
+```
+
+
+
+### Building more complex conditions
+
+`if-else` statements can also be useful to identify errors in your data. For example, a score should only be between 0 and 100, but a typo at entry could lead to an unacceptable value. 
+
+1. In the box below, write an `if-else` statement that prints out `correct` if the math score value is between 0 and 100, and `incorrect` if the value is outside those bounds. Since we have two bounds to test, 0 and 100, we can use the `&` logical operator to ensure both are tested and true at the same time.
+2. Test your code by varying the value of `math_score`.
+
+```{r ifelse_ex2, exercise=TRUE, exercise.eval=FALSE}
+math_score <- 705
+
+# Write your if-else statement below
+
+
+
+```
+
+```{r ifelse_ex2-hint}
+math_score <- 705
+
+# Write your if-else statement below
+if (math_score >= 0 & math_score <= 100) {
+  print("correct")
+} else {
+  print("incorrect")
+}
+
+```
+
+
+### Testing for multiple categories
+
+We could also have more than two categories to assign depending on the value of a variable. That is where the `else if` statement comes in. It essentially let's you chain multiple `if` conditional tests, executing the one that is true. To use it, start with a `if` statement, followed by as many `else if` as you need with an optional `else` at the end to catch remaining possibilities. 
+
+1. The box below contains the structure of a test for multiple conditions. The conditions are tested one after the other until one is found true, leading to that section of code being executed. 
+2. Complete the structure so that the grade associated with `match_score` is printed following:
+* `>=90`: Grade A
+* `>=80`: Grade B
+* `>=70`: Grade C
+* `>=60`: Grade D
+* `<60`: Grade F
+
+**Since each tests are done in order, we can end with an `else` statement to cover everything associated with Grade F.**
+
+
+```{r ifelse_ex3, exercise=TRUE, exercise.eval=FALSE}
+math_score <- 85
+
+# Fill the if-else if-else statement below
+if (math_score >= 90) {
+  
+} else if (math_score >= 80) {
+  
+} else if (math_score >= 70) {
+  
+} else if (math_score >= 60) {
+  
+} else {
+  
+}
+
+
+```
+
+```{r ifelse_ex3-hint}
+math_score <- 85
+
+# Fill the if-else if-else statement below
+if (math_score >= 90) {
+  print("Grade A")
+} else if (math_score >= 80) {
+  print("Grade B")
+} else if (math_score >= 70) {
+  print("Grade C")
+} else if (math_score >= 60) {
+  print("Grade D")
+} else {
+  print("Grade F")
+}
+
+```
+
+
+### Nested statements
+
+`if-else` statements can also be applied on top of each other. These are called **nested statements**. You can use these if different range of data values must be categorized or processed differently. Going back to our previous examples, this can be used to first check if the score value is acceptable before either categorizing it or printing an error message. 
+
+Looking at the code in the box below, running it with a `math_score` value of less than 0 or above 100 will inform you the value cannot be graded. With the same code, we can still correctly grade any values between 0 and 100. Give it a try by varying the value of `math_score`.
+
+Note: For code such as this to execute correctly, you need to have matching open and closed parenthesis (like you would in an Excel quation), but you also need matching open and closed `{}` brackets. RStudio will help you by highlighting such errors, but to keep your code clear it is best practice to indent the content of statements by using the `Tab` key at the beginning of a row. 
+
+
+```{r ifelse_ex4, exercise=TRUE, exercise.eval=FALSE}
+math_score <- 850
+
+# Fill the if-else if-else statement below
+if (math_score >= 0 & math_score <= 100) {
+  if (math_score >= 90) {          # <-- See how code from here...
+    print("Grade A")              #
+  } else if (math_score >= 80) {  #
+    print("Grade B")              #
+  } else if (math_score >= 70) {  #
+    print("Grade C")              #
+  } else if (math_score >= 60) {  #
+    print("Grade D")              #
+  } else {                        #
+    print("Grade F")              #
+  }                                # <-- ...to here is indented inwards from the if statement containing it...
+} else {
+  print("Score outside of 0-100 bounds cannot be graded") # <-- ...same for rows inside each if, else or else if statements.
+}
+
+
+```
+
+
+
+
+## Calling functions
+
+Not yet available
+
+```{r funcall_ex}
+
+```
+
+
+## Importing packages
+
+Not yet available
+
+```{r packimport_ex}
+
+```
