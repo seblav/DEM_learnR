@@ -12,9 +12,6 @@ library(tidyverse)
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-
-# Codecademy Learn R  - Introduction to R syntax exercises
-
 ## R syntax
 
 ### Review the basics
@@ -106,7 +103,7 @@ print(phone_numbers[c(1, 3)])
 
 
 
-## if-else statements and operators
+## If-else statements and operators
 
 Now that we've reviewed some of the basic syntax, let's move on to `if-else` statements with comparison and logical operators.
 
@@ -316,7 +313,6 @@ my_seq<-seq(from=0,to=50,by=5)
 print(my_seq)
 ```
 
-\ 
 
 ## Importing Packages  
 
@@ -373,12 +369,8 @@ select<-dplyr::select
 ```
 
 
-\ 
 
-# Codecademy Learn R  - Introduction to data frames exercises
-
-
-## Inspecting data frames
+## Introduction to Data Frames
 
 Data frames are objects in R that contain data: columns are typically variables and rows are observations. Data frames can be created in R directly, or can be imported as .csv, .xlsx, and even SAS files. An alternative name for a data frame within the `tidyverse` is a `tibble`. Tibbles are considered 'tidy' (i.e. optimized) data frame types, and what we will be working with for the remainder of these sessions.
 
@@ -403,7 +395,7 @@ summary(iris)
 ```
 
 
-## CSVs
+### CSVs
 
 In one of the lessons, we learned about CSVs and how to import CSVs as data frames in R. Refer to the appropriate LearnR lesson if you need a refresher. Use your knowledge to answer the questions below.
 
@@ -442,7 +434,7 @@ quiz(
 ```
 
 
-## Piping
+### Piping
 
 In R, there are two ways you can perform sequential operations on a number, vector, data set, or any object, really: nested operations, or via *piping*. Piping is specific to the tidyverse, whereas nesting is how you would typically do it in base R. We will demonstrate the difference between the two with a quick example.
 
@@ -485,7 +477,7 @@ iris %>%
 
 
 
-## Column selection
+### Column selection
 
 Above, we already got some experience with selecting specific columns within a data frame. More generally, you can list any columns you would like to select with the use of the `select()` function, or, alternative choose to drop specific columns by placing the `-` sign before the column name.
 
