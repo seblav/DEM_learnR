@@ -1,13 +1,14 @@
 ---
 title: "Centre for demography R for beginners"
-author: 'Author: Sébastien Lavoie'
-date: 'Version: June 28th, 2022'
+author: 'Authors: Sébastien Lavoie, Elham Sirag'
+date: 'Version: Sept 8th, 2022'
 output: learnr::tutorial
 runtime: shiny_prerendered
 ---
 
 ```{r setup, include=FALSE}
 library(learnr)
+library(tidyverse)
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
@@ -262,19 +263,258 @@ if (math_score >= 0 & math_score <= 100) {
 
 
 
-## Calling functions
+## Calling Functions 
 
-Not yet available
+Now we'll move on to calling functions in R. A *function* is simply an action that we perform in R. R comes with a number of pre-installed *packages* containing useful functions, but they can also be defined by the user if none exist for the specific task or purpose. Functions are useful in cases where a specific action (say, for example, taking the mean of a vector of numbers) will need to be done repetitively. They can be thought of as analogous to macros in SAS. 
 
-```{r funcall_ex}
+Functions are called by passing an *argument* through them, contained within parentheses: `myFunction()`. Arguments are simply values that the function will be evaluated at (inputs). Thus far, we have used the `print()` functions a handful of times to display the results of our code.
+
+Below, we will practice calling some functions.
+
+
+### Single argument functions
+
+ 1. First, define the vector `x` to contain the numbers 1 through 5. (Hint: there are multiple ways to do this. A shortcut for defining a *sequence* of consecutive numbers in R is to write out the starting and ending values of the sequence, separated by `:`. Alternatively, you may type out each number.)
+ 
+ 2. Use the `mean()` function to take the mean of this vector, and store the results in a variable called `mean_x`
+ 
+ 3. Print the results.
+
+```{r mean, exercise=TRUE}
+x<-c()
+
+```
+
+```{r mean-solution}
+x<-c(1:5)
+mean_x<-mean(x)
+print(x)
+```
+
+
+### Multiple argument functions
+
+Above, we used a function that only required a single argument for evaluation. Below, we will try calling a function that requires multiple arguments.
+
+ 1. Use the `seq()` function to define a sequence of numbers from 0 to 50, in increments of 5. The `seq()` function requires three arguments: starting number ("from"), ending number ("to"), and increments ("by"). You can either list the arguments themselves in the specific order above, or list them in whatever order you like by labeling the arguments appropriately (Hint: in this exercise, you would write `from=0` as one of the arguments).
+ 
+ 2. Save the output as a variable called `my_seq` and print the results.
+ 
+```{r seq, exercise=TRUE}
+
+
+```
+
+```{r seq-solution}
+my_seq<-seq(0,50,5)
+
+# or 
+
+my_seq<-seq(from=0,to=50,by=5)
+
+
+print(my_seq)
+```
+
+\ 
+
+## Importing Packages  
+
+R functions are contained in what are called *packages*: collections of functions that are usually related to one another, or intended for a specific type of analysis. The `demography` package, for example, contains functions useful for demographic analysis (such as the computation of life tables, or forecasting of fertility rates).
+
+R comes with a number of packages already pre-installed, but once you begin to use R more regularly, you'll likely find that you'll need to *import* packages from the [CRAN](https://cran.r-project.org/) (Comprehensive R Archive Network). R allows individuals to create their own packages that, once reviewed, are hosted on an online package repository. To access them, we need to first install them and then call them.
+
+At Statcan, packages are maintained and hosted internally. To learn how to install packages in different environments (AVD, VDI-A, etc.) refer to the following link: https://rpug.pages.cloud.statcan.ca/en/setup/r/r-packages/. If installing a package on your personal computer (or the AVD), you would use the following code:
+
+```{r,eval=FALSE}
+install.packages("dplyr")
+```
+
+and use the code below to *call* on a package:
+
+```{r,eval=FALSE}
+library(dplyr)
+```
+
+
+If a package is not loaded prior to use, then any function within the package that you'd like to use will not be recognized by R.
+
+
+Lastly, it is possible that two functions with the same name exist in two different packages. For example, the `filter()` function exists within both the `dplyr` and `stats` packages. Which R will choose to recognize depends on the order the package was loaded. If ever the wrong one is defined, you can fix this by re-assignment.
+
+```{r,eval=FALSE}
+
+# Tell R that wou want 'filter' to refer to the filter function in the dplyr package for the current session.
+
+filter<-dplyr::filter
 
 ```
 
 
-## Importing packages
+Now for some exercises. We will be using the `iris` data set, which comes with R and requires no loading.
 
-Not yet available
+ 1. Below we would like to use the `select()` function from the `dplyr` package to analyze the `iris` data set. Insert the appropriate line of code below to ensure we can use it (the package itself is already installed).
+ 
+2. Assign the `select()` function to correspond to the `select()` function from the `dplyr` package. 
+ 
+  
+```{r package, exercise=TRUE}
+iris %>%
+  select(-Species)
 
-```{r packimport_ex}
+```
+
+```{r package-solution}
+library(dplyr)
+iris %>%
+  select(-Species)
+
+select<-dplyr::select
+```
+
+
+\ 
+
+# Codecademy Learn R  - Introduction to data frames exercises
+
+
+## Inspecting data frames
+
+Data frames are objects in R that contain data: columns are typically variables and rows are observations. Data frames can be created in R directly, or can be imported as .csv, .xlsx, and even SAS files. An alternative name for a data frame within the `tidyverse` is a `tibble`. Tibbles are considered 'tidy' (i.e. optimized) data frame types, and what we will be working with for the remainder of these sessions.
+
+When data frames are imported (see the Learn R section on importing .csv files), it is good practice to inspect them and make sure the data are what you expect. There are a few functions that are particularly useful for this: `head()` will print the first 6 rows of the dataset,  `summary()` presents a statistical summary of the numerical variables (mean, median, etc.) and descriptions of character variables; and `str()` provides a less detailed summary.
+
+
+1. In the box below, use the `head()` function to print the first 10 rows, rather than 6, of the `iris` data set (hint: the name of the argument used to control the number of rows displayed is `n`).
+
+2. What is the mean of the `Sepal.Length` variable?
+
+```{r df, exercise=TRUE}
+
+```
+
+
+```{r df-solution}
+# First print the first 10 observations
+head(iris,n=10)
+
+# Then use the summary() function to view statistical summaries of the variables; the mean is 5.843
+summary(iris)
+```
+
+
+## CSVs
+
+In one of the lessons, we learned about CSVs and how to import CSVs as data frames in R. Refer to the appropriate LearnR lesson if you need a refresher. Use your knowledge to answer the questions below.
+
+
+```{r csv_quiz, echo=FALSE}
+
+quiz(  
+  question_checkbox(
+    "In a CSV file, values are separated by which symbol?",
+    answer("*"),
+    answer(",", correct = TRUE),
+    answer("space"),
+    allow_retry = TRUE,
+    random_answer_order = TRUE
+  ),
+  
+  question_checkbox(
+    "True or false: It is assumed that the first row of a CSV file contains column names",
+    answer("TRUE", correct = TRUE),
+    answer("FALSE"),
+    random_answer_order = TRUE,
+    allow_retry = TRUE
+  ),
+  
+  question_checkbox(
+    "What line of code would we use to import the 'my_data' CSV file using the readr package?",
+    answer("read_csv(my_data.csv)"),
+    answer("read.csv('my_data.csv')"),
+    answer("read_csv('my_data.csv')", correct = TRUE),
+    random_answer_order = TRUE,
+    allow_retry = TRUE
+  )
+)  
+
+
+```
+
+
+## Piping
+
+In R, there are two ways you can perform sequential operations on a number, vector, data set, or any object, really: nested operations, or via *piping*. Piping is specific to the tidyverse, whereas nesting is how you would typically do it in base R. We will demonstrate the difference between the two with a quick example.
+
+Say you would like to take the mean of a vector of numbers from 1 to 5, then take the square root of this, divide this value by 2, and then take the whole thing to the exponent of 4. This is how we would do it in base R:
+
+
+```{r}
+(sqrt((mean(1:5)))/2)^4
+```
+
+
+We work from the inside-out, with each pair of brackets separating one operation from the next. You *can* figure out what's being done, but the code is not the most readable. With the piping operator, given by the symbol `%>%`, we would achieve the same result in the following manner:
+
+```{r}
+1:5 %>%
+  mean() %>%
+  sqrt() %>%
+  `/`(2) %>%
+  `^`(4)
+```
+
+
+The pipe can be thought of as meaning 'and then': first you define the vector `1:5`, and then you take the mean of this whole thing, and then square root of that, and etc. You do not need to define the arguments within the functions used (for example, `mean()`) *if* the only argument is the initial object itself, because R knows to take the output from the preceding line as input. The result is more lines of code, but easier to read.
+
+
+1. Perform the following set of operations on the `iris` data set: inspect the first few elements with the `head()` function, select only `Sepal.Length` variable using the `select()` function, then use `summary()` to summarize.
+
+
+```{r pip, exercise=TRUE}
+
+```
+
+
+```{r pip-solution}
+iris %>%
+  head() %>%
+  select(Sepal.Length) %>%
+  summary()
+```
+
+
+
+## Column selection
+
+Above, we already got some experience with selecting specific columns within a data frame. More generally, you can list any columns you would like to select with the use of the `select()` function, or, alternative choose to drop specific columns by placing the `-` sign before the column name.
+
+
+Now for some practice. First, we'll use Use the `colnames()` function to view the columns contained within the`iris` data set
+
+```{r}
+colnames(iris)
+```
+
+
+1. From the data set, select only the *Petal.Width* and *Species* columns, using the pipe operator.
+
+2. Achieve the same result as above, except this time by removing the columns we don't need.
+
+
+```{r sel, exercise=TRUE}
+
+```
+
+
+```{r sel-solution}
+# 1. Select the two columns
+iris %>%
+  select(Petal.Width, Species)
+
+# 2. Remove the unwanted columns
+
+iris %>%
+  select(-Sepal.Length, -Sepal.Width, -Petal.Length)
 
 ```
